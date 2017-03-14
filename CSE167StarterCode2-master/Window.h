@@ -15,6 +15,7 @@
 #include "token.h"
 #include "Skeleton.h"
 #include "Skin.h"
+#include "LocomotiveCreature.h"
 
 //from proj1
 #include <vector>

@@ -6,6 +6,7 @@ Skybox * skybox;
 Tokenizer * token;
 Skeleton * skeleton;
 Skin * skin;
+LocomotiveCreature * creature;
 
 GLint shaderProgram;
 GLint skyboxShaderProgram;
@@ -49,6 +50,11 @@ int jointCount = 0;
 int jointIndex = 0;
 int DOFtype = 0;
 
+bool UP_FLAG = false;
+bool DOWN_FLAG = false;
+bool RIGHT_FLAG = false;
+bool LEFT_FLAG = false;
+
 glm::vec2 mouse_point;
 glm::vec3 lastPoint;
 
@@ -65,23 +71,26 @@ void Window::initialize_objects(const char * filename_skel, const char * filenam
 
 	//init skeleton object
 	skeleton = new Skeleton();
-	skin = new Skin(skeleton);
-	string path_skel = "C:/Users/Ty/Documents/School/WI17/CSE 169/Proj2/CSE167StarterCode2-master/skels/";
-	string path_skin = "C:/Users/Ty/Documents/School/WI17/CSE 169/Proj2/CSE167StarterCode2-master/skins/";
+	//skin = new Skin(skeleton);
+	string path_skel = "C:/Users/Ty/Documents/School/WI17/CSE 169/Proj5/CSE167StarterCode2-master/skels/";
+	//string path_skin = "C:/Users/Ty/Documents/School/WI17/CSE 169/Proj2/CSE167StarterCode2-master/skins/";
 	if (filename_skel == NULL)
 		filename_skel = "wasp.skel";
-	if (filename_skin == NULL)
-		filename_skin = "wasp.skin";
+	//if (filename_skin == NULL)
+		//filename_skin = "wasp.skin";
 	path_skel = path_skel + filename_skel;
-	path_skin = path_skin + filename_skin;
+	//path_skin = path_skin + filename_skin;
 	skeleton->Load(path_skel.c_str());
-	skin->Load(path_skin.c_str());
+	//skin->Load(path_skin.c_str());
 
 	jointCount = skeleton->GetJointCount();
 	cout << jointCount;
 
 	//Set the skybox
 	skybox = new Skybox();
+
+	//create a gait for walking
+	creature = new LocomotiveCreature(skeleton->GetRoot());
 }
 
 // Treat this as a destructor function. Delete dynamically allocated memory here.
@@ -155,7 +164,17 @@ void Window::resize_callback(GLFWwindow* window, int width, int height)
 void Window::idle_callback()
 {
 	skeleton->Update();
-	skin->Update();
+	//skin->Update();
+	if (UP_FLAG == true)
+	{
+		creature->Update(0.0005f);
+	}
+
+	else if (DOWN_FLAG == true)
+	{
+		creature->Update(-0.0005f);
+	}
+
 }
 
 void Window::display_callback(GLFWwindow* window)
@@ -173,12 +192,12 @@ void Window::display_callback(GLFWwindow* window)
 	// Use the shader of programID
 	glUseProgram(shaderProgram);
 	//render skeleton
-	//skeleton->Draw(shaderProgram);
+	skeleton->Draw(shaderProgram);
 
 	// Use the shader of programID
 	glUseProgram(normalShaderProgram);
 	//render skin
-	skin->Draw(normalShaderProgram);
+	//skin->Draw(normalShaderProgram);
 
 	// Gets events, including input such as keyboard and mouse or window resizing
 	// Swap buffers
@@ -191,8 +210,29 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 	// Check for a key press
 	if (action == GLFW_PRESS)
 	{
+
+		if (key == GLFW_KEY_UP)
+		{
+			UP_FLAG = true;
+		}
+
+		else if (key == GLFW_KEY_DOWN)
+		{
+			DOWN_FLAG = true;
+		}
+
+		else if (key == GLFW_KEY_LEFT)
+		{
+			LEFT_FLAG = true;
+		}
+
+		else if (key == GLFW_KEY_RIGHT)
+		{
+			RIGHT_FLAG = true;
+		}
+
 		// Check if escape was pressed
-		if (key == GLFW_KEY_ESCAPE)
+		else if (key == GLFW_KEY_ESCAPE)
 		{
 			// Close the window. This causes the program to also terminate.
 			glfwSetWindowShouldClose(window, GL_TRUE);
@@ -213,26 +253,6 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 		else if (key == GLFW_KEY_1)
 		{
 			Mode = CAMERA;
-		}
-
-		else if (key == GLFW_KEY_LEFT)
-		{
-			if (jointIndex <= 0)
-				jointIndex = jointCount - 1;
-
-			else jointIndex--;
-
-			cout << jointIndex  << " " << DOFtype << endl;
-		}
-
-		else if (key == GLFW_KEY_RIGHT)
-		{
-			if (jointIndex >= jointCount - 1)
-				jointIndex = 0;
-
-			else jointIndex++;
-
-			cout << jointIndex  << " " << DOFtype << endl;
 		}
 
 		else if (key == GLFW_KEY_X)
@@ -293,15 +313,28 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 			translateCamera({ 0.0f,-1.0f,0.0f });
 			//cout << "y" << endl;
 		}
+	}
 
-		else if (key == GLFW_KEY_UP)
+	if (action == GLFW_RELEASE)
+	{
+		if (key == GLFW_KEY_UP)
 		{
-			skeleton->SetDOF(jointIndex, DOFtype, 0.1);
+			UP_FLAG = false;
 		}
 
 		else if (key == GLFW_KEY_DOWN)
 		{
-			skeleton->SetDOF(jointIndex, DOFtype, -0.1);
+			DOWN_FLAG = false;
+		}
+
+		else if (key == GLFW_KEY_LEFT)
+		{
+			LEFT_FLAG = false;
+		}
+
+		else if (key == GLFW_KEY_RIGHT)
+		{
+			RIGHT_FLAG = false;
 		}
 	}
 }

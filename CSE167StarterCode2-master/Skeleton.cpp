@@ -44,3 +44,7 @@ void Skeleton::SetDOF(int jointIndex, int DOFtype, float change) {
 	root->FindDOF(jointIndex, DOFtype, change);
 }
 
+Joint * Skeleton::GetRoot() {
+	return root;
+}
+

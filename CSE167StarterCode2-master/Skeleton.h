@@ -44,6 +44,7 @@ public:
 	glm::mat4 FindWorldMat(int index);
 	int GetJointCount();
 	void SetDOF(int index, int DOFtype, float change);
+	Joint * GetRoot();
 };
 
 #endif

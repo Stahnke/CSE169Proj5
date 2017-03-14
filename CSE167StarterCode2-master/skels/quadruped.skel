@@ -1,0 +1,126 @@
+balljoint root {
+	offset 0 0 0
+	boxmin -1.0 -1.0 -2.0
+	boxmax 1.0 1.0 2.0
+	rotxlimit -6 6
+	rotylimit -6 6
+	rotzlimit -6 6
+	pose 0 0 0
+	balljoint head {
+		offset 0 1.0 -2
+		boxmin -0.75 -0.75 -1.5
+		boxmax 0.75 0.75 0
+		rotxlimit -1 1
+		rotylimit 0 0
+		rotzlimit 0 0.5
+		pose 0 0 0
+	}
+	balljoint hip_front_right {
+		offset 0.75 -1.0 -1.75
+		boxmin -0.25 -1 -0.25
+		boxmax 0.25 0 0.25
+		rotxlimit -1 1
+		rotylimit 0 0
+		rotzlimit 0 0.5
+		pose 0 0 0
+		balljoint leg_front_right {
+			offset 0 -1.0 0
+			boxmin -0.25 -0.75 -0.25
+			boxmax 0.25 0 0.25
+			rotxlimit -1 0
+			rotylimit 0 0
+			rotzlimit 0 0
+			pose 0 0 0
+			balljoint foot_front_right {
+				offset 0 -0.75 0
+				boxmin 0 0 0
+				boxmax 0 0 0
+				rotxlimit 0 0
+				rotylimit 0 0
+				rotzlimit 0 0
+				pose 0 0 0
+			}
+		}
+	}
+	balljoint hip_front_left {
+		offset -0.75 -1.0 -1.75
+		boxmin -0.25 -1 -0.25
+		boxmax 0.25 0 0.25
+		rotxlimit -1 1
+		rotylimit 0 0
+		rotzlimit -0.5 0
+		pose 0 0 0
+		balljoint leg_front_left {
+			offset 0 -1.0 0
+			boxmin -0.25 -0.75 -0.25
+			boxmax 0.25 0 0.25
+			rotxlimit -1 0
+			rotylimit 0 0
+			rotzlimit 0 0
+			pose 0 0 0
+			balljoint foot_front_left {
+				offset 0 -0.75 0
+				boxmin 0 0 0
+				boxmax 0 0 0
+				rotxlimit 0 0
+				rotylimit 0 0
+				rotzlimit 0 0
+				pose 0 0 0
+			}
+		}
+	}
+	balljoint hip_back_right {
+		offset 0.75 -1.0 1.75
+		boxmin -0.25 -1 -0.25
+		boxmax 0.25 0 0.25
+		rotxlimit -1 1
+		rotylimit 0 0
+		rotzlimit 0 0.5
+		pose 0 0 0
+		balljoint leg_back_right {
+			offset 0 -1.0 0
+			boxmin -0.25 -0.75 -0.25
+			boxmax 0.25 0 0.25
+			rotxlimit -1 0
+			rotylimit 0 0
+			rotzlimit 0 0
+			pose 0 0 0
+			balljoint foot_back_right {
+				offset 0 -0.75 0
+				boxmin 0 0 0
+				boxmax 0 0 0
+				rotxlimit 0 0
+				rotylimit 0 0
+				rotzlimit 0 0
+				pose 0 0 0
+			}
+		}
+	}
+	balljoint hip_back_left {
+		offset -0.75 -1.0 1.75
+		boxmin -0.25 -1 -0.25
+		boxmax 0.25 0 0.25
+		rotxlimit -1 1
+		rotylimit 0 0
+		rotzlimit -0.5 0
+		pose 0 0 0
+		balljoint leg_back_left {
+			offset 0 -1.0 0
+			boxmin -0.25 -0.75 -0.25
+			boxmax 0.25 0 0.25
+			rotxlimit -1 0
+			rotylimit 0 0
+			rotzlimit 0 0
+			pose 0 0 0
+			balljoint foot_back_left {
+				offset 0 -0.75 0
+				boxmin 0 0 0
+				boxmax 0 0 0
+				rotxlimit 0 0
+				rotylimit 0 0
+				rotzlimit 0 0
+				pose 0 0 0
+			}
+		}
+	}
+}

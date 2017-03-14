@@ -105,6 +105,9 @@ public:
 	int GetJointCount();
 	void SetDOF(int DOFtype, float change);
 	void FindDOF(int jointIndex, int DOFtype, float change);
+	Joint * FindJoint(int index);
+	glm::vec3 GetOffset();
+	void AddOffsetZ(float deltaZ);
 };
 
 #endif

@@ -233,11 +233,23 @@ int Joint::GetJointCount() {
 }
 
 void Joint::SetDOF(int DOFtype, float change) {
-	DOFs[DOFtype]->SetValue(DOFs[DOFtype]->GetValue() + change);
+	DOFs[DOFtype]->SetValue(change);
 
 }
 
 void Joint::FindDOF(int jointIndex, int DOFtype, float change) {
 	allJoints[jointIndex]->SetDOF(DOFtype, change);
 
+}
+
+Joint * Joint::FindJoint(int index) {
+	return children[index];
+}
+
+glm::vec3 Joint::GetOffset() {
+	return offset;
+}
+
+void Joint::AddOffsetZ(float deltaZ) {
+	offset[2] += deltaZ;
 }
