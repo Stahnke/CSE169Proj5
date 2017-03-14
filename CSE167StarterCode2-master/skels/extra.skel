@@ -1,0 +1,135 @@
+balljoint root {
+	offset 0 0 0
+	boxmin -1.0 -1.0 -0.2
+	boxmax 1.0 1.0 0.2
+	rotxlimit -6 6
+	rotylimit -6 6
+	rotzlimit -6 6
+	pose 0 0.0 0
+	balljoint thumb1 {
+		offset -1.0 -0.5 0
+		boxmin -0.7 0 -0.2
+		boxmax 0 0.5 0.2
+		rotxlimit 0 0
+		rotylimit -2.0 0
+		rotzlimit -1.5 0
+		pose 0 -0.5 -0.4
+		balljoint thumb2 {
+			offset -0.7 0 0
+			boxmin -0.5 0 -0.2
+			boxmax 0 0.5 0.2
+			rotxlimit 0 0
+			rotylimit -1.5 0
+			rotzlimit 0 0
+			pose 0 -0.5 0
+		}
+	}
+	balljoint index1 {
+		offset -0.75 1 0
+		boxmin -0.25 0 -0.2
+		boxmax 0.25 1.0 0.2
+		rotxlimit -1.5 0
+		rotylimit 0 0
+		rotzlimit -0.5 0.5
+		pose -0.25 0 0.25
+		balljoint index2 {
+			offset 0 1 0
+			boxmin -0.20 0 -0.2
+			boxmax 0.20 0.8 0.2
+			rotxlimit -1.5 0
+			rotylimit 0 0
+			rotzlimit 0 0
+			pose -0.25 0 0
+			balljoint index3 {
+				offset 0 0.8 0
+				boxmin -0.15 0 -0.2
+				boxmax 0.15 0.4 0.2
+				rotxlimit -1.5 0
+				rotylimit 0 0
+				rotzlimit 0 0
+				pose -0.25 0 0
+			}
+		}
+	}
+	balljoint middle1 {
+		offset -0.25 1 0
+		boxmin -0.25 0 -0.2
+		boxmax 0.25 1.1 0.2
+		rotxlimit -1.5 0
+		rotylimit 0 0
+		rotzlimit -0.5 0.5
+		pose -0.25 0 0
+		balljoint middle2 {
+			offset 0 1.1 0
+			boxmin -0.20 0 -0.2
+			boxmax 0.20 0.9 0.2
+			rotxlimit -1.5 0
+			rotylimit 0 0
+			rotzlimit 0 0
+			pose -0.25 0 0
+			balljoint middle3 {
+				offset 0 0.9 0
+				boxmin -0.15 0 -0.2
+				boxmax 0.15 0.5 0.2
+				rotxlimit -1.5 0
+				rotylimit 0 0
+				rotzlimit 0 0
+				pose -0.25 0 0
+			}
+		}
+	}
+	balljoint ring1 {
+		offset 0.25 1 0
+		boxmin -0.25 0 -0.2
+		boxmax 0.25 1.05 0.2
+		rotxlimit -1.5 0
+		rotylimit 0 0
+		rotzlimit -0.5 0.5
+		pose -0.25 0 -0.25
+		balljoint ring2 {
+			offset 0 1.05 0
+			boxmin -0.20 0 -0.2
+			boxmax 0.20 0.85 0.2
+			rotxlimit -1.5 0
+			rotylimit 0 0
+			rotzlimit 0 0
+			pose -0.25 0 0
+			balljoint ring3 {
+				offset 0 0.85 0
+				boxmin -0.15 0 -0.2
+				boxmax 0.15 0.45 0.2
+				rotxlimit -1.5 0
+				rotylimit 0 0
+				rotzlimit 0 0
+				pose -0.25 0 0
+			}
+		}
+	}
+	balljoint pinky1 {
+		offset 0.75 1 0
+		boxmin -0.25 0 -0.2
+		boxmax 0.25 0.7 0.2
+		rotxlimit -1.5 0
+		rotylimit 0 0
+		rotzlimit -1 0
+		pose -0.25 0 -0.5
+		balljoint pinky2 {
+			offset 0 0.7 0
+			boxmin -0.20 0 -0.2
+			boxmax 0.20 0.6 0.2
+			rotxlimit -1.5 0
+			rotylimit 0 0
+			rotzlimit 0 0
+			pose -0.25 0 0	
+			balljoint pinky3 {
+				offset 0 0.6 0
+				boxmin -0.15 0 -0.2
+				boxmax 0.15 0.4 0.2
+				rotxlimit -1.5 0
+				rotylimit 0 0
+				rotzlimit 0 0
+				pose -0.25 0 0
+			}
+		}
+	}
+}
