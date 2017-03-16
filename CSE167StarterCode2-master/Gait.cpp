@@ -30,7 +30,7 @@ void Gait::Update(float stepSize) {
 		curTime = 0.0f;
 	}
 
-	else if (curTime <= 0.0f)
+	else if (curTime < 0.0f)
 	{
 		curTime = maxTime;
 	}

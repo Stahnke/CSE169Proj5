@@ -3,6 +3,10 @@
 
 LocomotiveCreature::LocomotiveCreature(Joint * root) : root(root){
 	
+	sprintOkay = false;
+	sprinting = false;
+	turnRadian = 0.0f;
+
 	vector<float> walk_triggers;
 	walk_triggers.push_back(0.75f);
 	walk_triggers.push_back(0.25f);
@@ -10,14 +14,16 @@ LocomotiveCreature::LocomotiveCreature(Joint * root) : root(root){
 	walk_triggers.push_back(0.0f);
 
 	float walk_dutyFactor = 0.7f;
+	maxWalkSpeed = 0.0005f;
 
 	vector<float> gallop_triggers;
 	gallop_triggers.push_back(0.0f);
-	gallop_triggers.push_back(0.2f);
-	gallop_triggers.push_back(0.4f);
-	gallop_triggers.push_back(0.6f);
+	gallop_triggers.push_back(0.5f);
+	gallop_triggers.push_back(0.5f);
+	gallop_triggers.push_back(0.0f);
 
-	float gallop_dutyFactor = 0.5f;
+	float gallop_dutyFactor = 0.4f;
+	maxGallopSpeed = 0.002f;
 
 	walk_gait = new Gait(walk_dutyFactor, walk_triggers);
 	gallop_gait = new Gait(gallop_dutyFactor, gallop_triggers);
@@ -79,8 +85,75 @@ LocomotiveCreature::~LocomotiveCreature() {
 
 }
 
-void LocomotiveCreature::Update(float stepSize) {
-	cur_gait->Update(stepSize);
+void LocomotiveCreature::Update() {
+
+	speed += accel;
+
+	if (sprintOkay == false)
+	{
+		if (sprinting == false)
+		{
+			if (speed >= maxWalkSpeed)
+			{
+				speed = maxWalkSpeed;
+			}
+
+			else if (speed <= -maxWalkSpeed)
+			{
+				speed = -maxWalkSpeed;
+			}
+		}
+		else
+		{
+			if (speed > maxWalkSpeed)
+			{
+				speed -= (glm::abs(accel * 3));
+				if (speed <= maxWalkSpeed)
+				{
+					speed = maxWalkSpeed;
+					sprinting = false;
+				}
+			}
+
+			else if (speed < -maxWalkSpeed)
+			{
+				speed += (glm::abs(accel * 3));
+				if (speed >= -maxWalkSpeed)
+				{
+					speed = -maxWalkSpeed;
+					sprinting = false;
+				}
+			}
+		}
+	}
+
+	else
+	{	
+		sprinting = true;
+		if (speed >= maxGallopSpeed)
+		{
+			speed = maxGallopSpeed;
+		}
+
+		else if (speed <= -maxGallopSpeed)
+		{
+			speed = -maxGallopSpeed;
+		}
+	}
+
+	//Set the gait
+	if (speed > maxWalkSpeed || speed < -maxWalkSpeed)
+	{
+		cur_gait = gallop_gait;
+	}
+
+	else
+	{
+		cur_gait = walk_gait;
+	}
+
+
+	cur_gait->Update(speed);
 	vector<float> curTimes = cur_gait->GetCurTimes();
 	vector<float> dutyFactors = cur_gait->GetDutyFactors();
 
@@ -90,5 +163,53 @@ void LocomotiveCreature::Update(float stepSize) {
 	}
 
 	//Move the root forwards or backwards
-	root->AddOffsetZ(-stepSize * cur_gait->GetDutyFactors()[0]);
+	if (movementOkay)
+	{
+		float x = sin(root->GetDOF(1));
+		float y = 0;
+		float z = cos(root->GetDOF(1));
+		glm::vec3 directionVec = glm::vec3(x,y,z);
+		glm::normalize(directionVec);
+		root->AddOffset(-speed * cur_gait->GetDutyFactors()[0] * directionVec);
+		//root->Translate(glm::vec3(0.0f, 0.0f, -speed * cur_gait->GetDutyFactors()[0]));
+	}
+	
+	
+	//Rotate the body to the current turn position
+	root->SetDOF(1, this->turnRadian);
+}
+
+void LocomotiveCreature::SetAccel(float accel) {
+	this->accel = accel;
+}
+
+void LocomotiveCreature::ComeToStop(float stoppingAccel) {
+
+	accel = 0.0f;
+
+	if (speed > 0)
+	{
+		speed -= stoppingAccel;
+		if (speed < 0)
+			speed = 0;
+	}
+
+	else if (speed < 0)
+	{
+		speed += stoppingAccel;
+		if (speed > 0)
+			speed = 0;
+	}
+}
+
+void LocomotiveCreature::SetSprint(bool sprintOkay) {
+	this->sprintOkay = sprintOkay;
+}
+
+void LocomotiveCreature::TurnCreature(float turnRadian) {
+	this->turnRadian = this->turnRadian + turnRadian;
+}
+
+void LocomotiveCreature::SetMovementOkay(bool movementOkay) {
+	this->movementOkay = movementOkay;
 }

@@ -207,17 +207,25 @@ void Joint::CalcMat() {
 	float yDeg = DOFs[YDOF]->GetValue() * 60.0f;
 	float zDeg = DOFs[ZDOF]->GetValue() * 60.0f;
 
-	toLocal = glm::rotate(glm::mat4(1.0f), xDeg / 180.0f * glm::pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)) * toLocal;
-	toLocal = glm::rotate(glm::mat4(1.0f), yDeg / 180.0f * glm::pi<float>(), glm::vec3(0.0f, 1.0f, 0.0f)) * toLocal;
-	toLocal = glm::rotate(glm::mat4(1.0f), zDeg / 180.0f * glm::pi<float>(), glm::vec3(0.0f, 0.0f, 1.0f)) * toLocal;
-	toLocal = glm::translate(glm::mat4(1.0f), offset) * toLocal;
-
 	if (parent != NULL)
 	{
+		toLocal = glm::rotate(glm::mat4(1.0f), xDeg / 180.0f * glm::pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)) * toLocal;
+		toLocal = glm::rotate(glm::mat4(1.0f), yDeg / 180.0f * glm::pi<float>(), glm::vec3(0.0f, 1.0f, 0.0f)) * toLocal;
+		toLocal = glm::rotate(glm::mat4(1.0f), zDeg / 180.0f * glm::pi<float>(), glm::vec3(0.0f, 0.0f, 1.0f)) * toLocal;
+		toLocal = glm::translate(glm::mat4(1.0f), offset) * toLocal;
+
 		toWorld = parent->getWorldMat() * toLocal;
 	}
 
-	else toWorld = toLocal;
+	else
+	{
+		toLocal = glm::rotate(glm::mat4(1.0f), xDeg / 180.0f * glm::pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)) * toLocal;
+		toLocal = glm::rotate(glm::mat4(1.0f), yDeg / 180.0f * glm::pi<float>(), glm::vec3(0.0f, 1.0f, 0.0f)) * toLocal;
+		toLocal = glm::rotate(glm::mat4(1.0f), zDeg / 180.0f * glm::pi<float>(), glm::vec3(0.0f, 0.0f, 1.0f)) * toLocal;
+		toLocal = glm::translate(glm::mat4(1.0f), offset) * toLocal;
+		
+		toWorld = toLocal;
+	}
 }
 
 void Joint::AddJoint(Joint * joint) {
@@ -234,7 +242,6 @@ int Joint::GetJointCount() {
 
 void Joint::SetDOF(int DOFtype, float change) {
 	DOFs[DOFtype]->SetValue(change);
-
 }
 
 void Joint::FindDOF(int jointIndex, int DOFtype, float change) {
@@ -250,6 +257,10 @@ glm::vec3 Joint::GetOffset() {
 	return offset;
 }
 
-void Joint::AddOffsetZ(float deltaZ) {
-	offset[2] += deltaZ;
+void Joint::AddOffset(glm::vec3 transVec) {
+	offset += transVec;
+}
+
+float Joint::GetDOF(int index) {
+	return DOFs[index]->GetValue();
 }

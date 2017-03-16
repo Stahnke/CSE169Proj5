@@ -54,6 +54,9 @@ bool UP_FLAG = false;
 bool DOWN_FLAG = false;
 bool RIGHT_FLAG = false;
 bool LEFT_FLAG = false;
+bool SPRINT_FLAG = false;
+
+float accel;
 
 glm::vec2 mouse_point;
 glm::vec3 lastPoint;
@@ -91,6 +94,7 @@ void Window::initialize_objects(const char * filename_skel, const char * filenam
 
 	//create a gait for walking
 	creature = new LocomotiveCreature(skeleton->GetRoot());
+	accel = 0.000001f;
 }
 
 // Treat this as a destructor function. Delete dynamically allocated memory here.
@@ -165,16 +169,50 @@ void Window::idle_callback()
 {
 	skeleton->Update();
 	//skin->Update();
+
+	float cur_accel = accel;
+	creature->SetMovementOkay(false);
+	
+	if (RIGHT_FLAG == true)
+	{
+		creature->TurnCreature(-0.0005f);
+		creature->SetAccel(cur_accel);
+	}
+
+	else if (LEFT_FLAG == true)
+	{
+		creature->TurnCreature(0.0005f);
+		creature->SetAccel(cur_accel);
+	}
+
+	if (SPRINT_FLAG == true)
+	{
+		cur_accel *= 1.25;
+		creature->SetSprint(true);
+	}
+
+	else
+	{
+		creature->SetSprint(false);
+	}
+	
 	if (UP_FLAG == true)
 	{
-		creature->Update(0.0005f);
+		creature->SetAccel(cur_accel);
+		creature->SetMovementOkay(true);
 	}
 
 	else if (DOWN_FLAG == true)
 	{
-		creature->Update(-0.0005f);
+		creature->SetAccel(-cur_accel);
+		creature->SetMovementOkay(true);
 	}
 
+	else if(RIGHT_FLAG == false && LEFT_FLAG == false){
+		creature->ComeToStop(cur_accel / 2);
+		creature->SetMovementOkay(true);
+	}
+	creature->Update();
 }
 
 void Window::display_callback(GLFWwindow* window)
@@ -229,6 +267,11 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 		else if (key == GLFW_KEY_RIGHT)
 		{
 			RIGHT_FLAG = true;
+		}
+
+		else if (key == GLFW_KEY_R)
+		{
+			SPRINT_FLAG = true;
 		}
 
 		// Check if escape was pressed
@@ -335,6 +378,11 @@ void Window::key_callback(GLFWwindow* window, int key, int scancode, int action,
 		else if (key == GLFW_KEY_RIGHT)
 		{
 			RIGHT_FLAG = false;
+		}
+
+		else if (key == GLFW_KEY_R)
+		{
+			SPRINT_FLAG = false;
 		}
 	}
 }

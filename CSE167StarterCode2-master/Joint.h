@@ -42,6 +42,8 @@ private:
 	const int YDOF = 1;
 	const int ZDOF = 2;
 
+	glm::vec3 transVec = glm::vec3(0.0f, 0.0f, 0.0f);
+
 	float boxxmin, boxymin, boxzmin, boxxmax, boxymax, boxzmax;
 
 	glm::mat4 toWorld;
@@ -107,7 +109,8 @@ public:
 	void FindDOF(int jointIndex, int DOFtype, float change);
 	Joint * FindJoint(int index);
 	glm::vec3 GetOffset();
-	void AddOffsetZ(float deltaZ);
+	void AddOffset(glm::vec3 transVec);
+	float GetDOF(int index);
 };
 
 #endif

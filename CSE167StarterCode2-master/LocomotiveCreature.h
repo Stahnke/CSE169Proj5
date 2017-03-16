@@ -34,6 +34,15 @@ private:
 	Gait * gallop_gait;
 	Gait * cur_gait;
 	Joint * root;
+	float accel;
+	float speed;
+	bool sprintOkay;
+	bool sprinting;
+	float turnRadian;
+	bool movementOkay;
+
+	float maxWalkSpeed;
+	float maxGallopSpeed;
 
 	vector<LocomotiveLeg*> legs;
 
@@ -41,7 +50,12 @@ public:
 	LocomotiveCreature(Joint * root);
 	~LocomotiveCreature();
 
-	void Update(float stepSize);
+	void Update();
+	void SetAccel(float accel);
+	void ComeToStop(float stoppingAccel);
+	void SetSprint(bool sprintOkay);
+	void TurnCreature(float turnRadian);
+	void SetMovementOkay(bool movementOkay);
 };
 
 #endif
